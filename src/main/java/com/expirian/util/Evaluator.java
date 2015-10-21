@@ -11,6 +11,9 @@ public class Evaluator {
 		ArrayList<String> sequenceList = new ArrayList<String>();
 		
 		sequenceList = sequenceToArray(expressionItr);
+		
+		// make this array global and run a process to create another one with sequence of operator number.
+		// each time you hit "(" recursively run the same method and return a double from there to store it as a regular number.
 				
 		
 		return 0;
