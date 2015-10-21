@@ -11,7 +11,8 @@ public class SequenceEvaluator {
 		
 		
 		ArrayList list = new ArrayList();
-		String sequence = "( 50 + 6 0) * 1 0 / (6 * (2+1))";
+		String sequence = "( (50 + 6 0) * 2 ) * 1 0 / (6 * (2+1))";
+//		String sequence = "5+2*(3+6)";
 		sequence = sequence.replaceAll("\\s","");
 		
 		for (char ch : sequence.toCharArray()){
@@ -21,7 +22,9 @@ public class SequenceEvaluator {
 		Iterator<Character> itr = list.iterator();
 
 		Evaluator ev = new Evaluator();
-		ev.evaluate(itr);
+//		ev.evaluate(itr);
+		double result = ev.eval(sequence);
+		System.out.println(result);
 		
 
 	}
