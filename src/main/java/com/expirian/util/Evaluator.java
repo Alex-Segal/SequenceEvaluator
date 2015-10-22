@@ -8,13 +8,13 @@ public class Evaluator {
 
 	
 	public double evaluate(Iterator<Character> itr) throws InvalidExpressionException {
-		Parser parser = new Parser();
-	    return parser.parse(itr);
+		Parser parser = new Parser(itr);
+	    return parser.parse();
 	}
 	
 	public double evaluate(String str) throws InvalidExpressionException {
-		Parser parser = new Parser();
-	    return parser.parse(str);
+		Parser parser = new Parser(str);
+	    return parser.parse();
 	}
 	
 

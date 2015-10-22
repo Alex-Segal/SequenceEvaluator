@@ -24,18 +24,16 @@ public class Parser{
 	int singleChar;
 	String str;
 	Iterator<Character> expressionItr;
-
-	public double parse(String str) throws InvalidExpressionException {
+	
+	public Parser(String str){
 		this.str = str;
-		return startParsing();
 	}
-	
-	public double parse(Iterator<Character> expressionItr) throws InvalidExpressionException {
+	public Parser(Iterator<Character> expressionItr){
 		this.expressionItr = expressionItr;
-		return startParsing();
 	}
 	
-	private double startParsing() throws InvalidExpressionException{
+	
+	public double parse() throws InvalidExpressionException{
 		nextChar();
 
 		double value = parseExpression(); // not multi threaded		

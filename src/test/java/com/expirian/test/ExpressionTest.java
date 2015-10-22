@@ -15,36 +15,48 @@ import java.util.concurrent.ExecutionException;
 public class ExpressionTest {
 
 	private static final double DOUBLE_DELTA = 1e-15;
+	ArrayList list = new ArrayList();
+	Evaluator ev = new Evaluator();
 
     @Test
-    public void EvaluateItrTest() throws InvalidExpressionException {
+    public void EvaluateItrTest1() throws InvalidExpressionException {
 
-    	ArrayList list = new ArrayList();
 		String sequence = "20 + 6 * (2+2 * (1+1))";
 		for (char ch : sequence.toCharArray()){
 			list.add(ch);
 		}
 		Iterator<Character> itr = list.iterator();
-		Evaluator ev = new Evaluator();
 		double result = ev.evaluate(itr);
-
         assertEquals(result, 56, DOUBLE_DELTA);
     }
     
     @Test
-    public void EvaluateStrTest() throws InvalidExpressionException {
+    public void EvaluateItrTest2() throws InvalidExpressionException {
 
-    	ArrayList list = new ArrayList();
-		String sequence = "20.0 + 6 * (2+2 * (1+1))";
+		String sequence = "(95 - 5) / (4+4)";
 		for (char ch : sequence.toCharArray()){
 			list.add(ch);
 		}
-		Evaluator ev = new Evaluator();
-		double result = ev.evaluate(sequence);
+		Iterator<Character> itr = list.iterator();
+		double result = ev.evaluate(itr);
+        assertEquals(result, 11.25, DOUBLE_DELTA);
+    }
+    
+    @Test
+    public void EvaluateStrTest3() throws InvalidExpressionException {
 
+		String sequence = "20.0 + 6 * (2+2 * (1+1))";
+		double result = ev.evaluate(sequence);
         assertEquals(result, 56, DOUBLE_DELTA);
     }
 
+    @Test
+    public void EvaluateStrTest4() throws InvalidExpressionException {
+
+		String sequence = "(-2)*6 * ( 6 * (2-1))";
+		double result = ev.evaluate(sequence);
+        assertEquals(result, -72, DOUBLE_DELTA);
+    }
 
 
 }
