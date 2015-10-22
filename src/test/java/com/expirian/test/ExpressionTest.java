@@ -17,7 +17,7 @@ public class ExpressionTest {
 	private static final double DOUBLE_DELTA = 1e-15;
 
     @Test
-    public void EvaluateItrTest() throws InvalidExpressionException, InterruptedException, ExecutionException {
+    public void EvaluateItrTest() throws InvalidExpressionException {
 
     	ArrayList list = new ArrayList();
 		String sequence = "20 + 6 * (2+2 * (1+1))";
@@ -32,7 +32,7 @@ public class ExpressionTest {
     }
     
     @Test
-    public void EvaluateStrTest() throws InvalidExpressionException, InterruptedException, ExecutionException {
+    public void EvaluateStrTest() throws InvalidExpressionException {
 
     	ArrayList list = new ArrayList();
 		String sequence = "20.0 + 6 * (2+2 * (1+1))";

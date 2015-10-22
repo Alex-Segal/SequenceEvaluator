@@ -1,77 +1,57 @@
 package com.expirian.util;
 
 import java.util.Iterator;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
 import com.expirian.exceptions.InvalidExpressionException;
 
-public class Parser{
 
-	private static Parser parser = new Parser( );
+/*
+	Personal note:
+	Please except my apologies for the very limited time I have in the evening and not completing 100% of requirements. 
+	I will be more than happy to talk about multi-threading during face to face / phone interview.
+	
+	In this exercise parentheses are not evaluated in parallel. 
+	Since I support nested parentheses it will be possible to do so only if we solve the expression backwards (the most inner parentheses go first). 
+	This will require place the equation or parts of it multiple times in memory.
+	The way I solve it is getting the iterator or string expression and lineary advance forward to solve the problem.
+	For this type of problem, in my opinion, non multi-threaded way will be sufficient and clean solution.
+
+*/
+
+public class Parser{
+	
 	int position = 0;
 	int singleChar;
 	String str;
 	Iterator<Character> expressionItr;
-	ExecutorService executor;
-	Future<Double> future;
-	
-	
-/*	public Parser(final String str){
+
+	public double parse(String str) throws InvalidExpressionException {
 		this.str = str;
-	}
-	
-	
-	public Parser(Iterator<Character> expressionItr){
-		this.expressionItr = expressionItr;
-	}*/
-	
-	private Parser(){
-	}
-	
-	public static Parser getInstance(){
-		return parser;
-	}
-	
-	public double parse(String str) throws InvalidExpressionException, InterruptedException, ExecutionException {
-		this.str = str;
-		executor = Executors.newSingleThreadExecutor();
-	    future = executor.submit(new ParseExpression());	
 		return startParsing();
 	}
 	
-	public double parse(Iterator<Character> expressionItr) throws InvalidExpressionException, InterruptedException, ExecutionException {
+	public double parse(Iterator<Character> expressionItr) throws InvalidExpressionException {
 		this.expressionItr = expressionItr;
-		executor = Executors.newSingleThreadExecutor();
-	    future = executor.submit(new ParseExpression());	
 		return startParsing();
 	}
 	
-	private double startParsing() throws InvalidExpressionException, InterruptedException, ExecutionException{
+	private double startParsing() throws InvalidExpressionException{
 		nextChar();
 
-//		double value = parseExpression(); // not multi threaded 
-		
-		// execute multi threaded parseExpression
-		double value = future.get();
-		
+		double value = parseExpression(); // not multi threaded		
 		if (singleChar != -1)
 			throw new InvalidExpressionException("Invalid character : " + (char) singleChar);
 		return value;
 	}
 
-	public double parseExpression() throws InvalidExpressionException, InterruptedException, ExecutionException { // parse expression within parentheses
-//		double value = parseSubExpression();
-		double value = future.get();
+	// The synchronized method will ensure that no 2 threads will access it concurrently.
+	public synchronized double parseExpression() throws InvalidExpressionException { // parse expression within parentheses
+		double value = parseSubExpression();
 		while (true) {
 			ignorWhiteSpace();
 			if (singleChar == '+') { // in case of addition
 				nextChar();
-//				value = value + parseSubExpression();
-				value = value + future.get();
+				value = value + parseSubExpression();
 			} else if (singleChar == '-') { // in case of subtraction
 				nextChar();
 				value = value - parseSubExpression();
@@ -81,7 +61,7 @@ public class Parser{
 		}
 	}
 
-	public double parseSubExpression() throws InvalidExpressionException, InterruptedException, ExecutionException { // parse high level operation (multiplication and division)
+	public double parseSubExpression() throws InvalidExpressionException { // parse high level operation (multiplication and division)
 		double value = parseNumber();
 		while (true) {
 			ignorWhiteSpace();
@@ -98,7 +78,7 @@ public class Parser{
 		}
 	}
 
-	private double parseNumber() throws InvalidExpressionException, InterruptedException, ExecutionException { // parse value and determine if negative
+	private double parseNumber() throws InvalidExpressionException { // parse value and determine if negative
 		double value;
 		boolean negative = false;
 		ignorWhiteSpace();
@@ -110,8 +90,7 @@ public class Parser{
 		}
 		if (singleChar == '(') { // in case of open parentheses do recursion (include nested parentheses)!
 			nextChar();
-//			value = parseExpression();
-			value = future.get();
+			value = parseExpression();
 			if (singleChar == ')')
 				nextChar();
 		} else { // construct full length number
@@ -145,7 +124,7 @@ public class Parser{
 
 	}
 
-	void ignorWhiteSpace() { // remove white spaces
+	void ignorWhiteSpace() { // ignore white spaces
 		while (Character.isWhitespace(singleChar))
 			nextChar();
 	}

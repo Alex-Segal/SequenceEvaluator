@@ -1,27 +1,26 @@
 package com.expirian.util;
 
 import java.util.Iterator;
-import java.util.concurrent.ExecutionException;
 
 import com.expirian.exceptions.InvalidExpressionException;
 
 public class Evaluator {
 
 	
-	public double evaluate(Iterator<Character> itr) throws InvalidExpressionException, InterruptedException, ExecutionException {
-		Parser parser = Parser.getInstance();
+	public double evaluate(Iterator<Character> itr) throws InvalidExpressionException {
+		Parser parser = new Parser();
 	    return parser.parse(itr);
 	}
 	
-	public double evaluate(String str) throws InvalidExpressionException, InterruptedException, ExecutionException {
-		Parser parser = Parser.getInstance();
+	public double evaluate(String str) throws InvalidExpressionException {
+		Parser parser = new Parser();
 	    return parser.parse(str);
 	}
 	
 
 	
 	
-	// not needed. Leave commented out just in case for later.
+	// not needed. Leave commented out just in case I will have time for multi-threaded solution.
 /*	private ArrayList<String> sequenceToArray(Iterator<Character> expressionItr){
 		// Convert expression to array
 		ArrayList<String> sequenceList = new ArrayList<String>();
